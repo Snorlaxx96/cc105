@@ -1,0 +1,101 @@
+{% extends "game/base.html" %} {% block title %}Sign Up{% endblock %}
+{% block page_title %}Sign Up{% endblock %}
+
+{% block content %}
+  <div class="signup-form-container">
+    <div class="form-card">
+      <form method="post" class="signup-form">
+        {% csrf_token %}
+        <div class="form-fields">
+          {{ form.as_p }}
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="signup-button">Create Account</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    .signup-form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .form-card {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+    
+    .signup-form .form-fields {
+      margin-bottom: 20px;
+    }
+    
+    .signup-form p {
+      margin-bottom: 20px;
+    }
+    
+    .signup-form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    .signup-form input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: border-color 0.3s;
+    }
+    
+    .signup-form input:focus {
+      border-color: #4a90e2;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    }
+    
+    .form-actions {
+      text-align: center;
+    }
+    
+    .signup-button {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .signup-button:hover {
+      background-color: #3a7bc8;
+    }
+    
+    .errorlist {
+      color: #e74c3c;
+      list-style-type: none;
+      padding: 0;
+      margin: 5px 0 0;
+      font-size: 14px;
+    }
+    
+    @media (max-width: 768px) {
+      .signup-form-container {
+        padding: 10px;
+      }
+      
+      .form-card {
+        padding: 20px;
+      }
+    }
+  </style>
+{% endblock %}

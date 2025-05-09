@@ -1,0 +1,146 @@
+{% extends 'game/base.html' %}
+
+{% block title %}Dashboard - Game Popularity Prediction{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-card">
+        <h2 class="card-title">Model Performance</h2>
+        <div class="card-content">
+            {% if model_performance.classification_report_list %}
+                <div class="table-responsive">
+                    <table class="performance-table">
+                        <thead>
+                            <tr>
+                                <th>Class/Metric</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1-Score</th>
+                                <th>Support</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in model_performance.classification_report_list %}
+                                {% if item.precision is not None %} {# Standard class row #}
+                                    <tr>
+                                        <td class="metric-label">{{ item.label }}</td>
+                                        <td>{{ item.precision|floatformat:2 }}</td>
+                                        <td>{{ item.recall|floatformat:2 }}</td>
+                                        <td>{{ item.f1_score|floatformat:2 }}</td>
+                                        <td>{{ item.support|floatformat:0 }}</td>
+                                    </tr>
+                                {% elif item.value is not None %} {# E.g., overall accuracy if it was a single value #}
+                                    <tr class="summary-row">
+                                        <td colspan="4"><strong>{{ item.label }}</strong></td>
+                                        <td>{{ item.value|floatformat:2 }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <p>Classification report data not available.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+    .dashboard-container {
+        display: grid;
+        gap: 24px;
+        margin-top: 20px;
+    }
+    
+    .dashboard-card {
+        background-color: var(--container-bg);
+        border-radius: var(--border-radius);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+        overflow: hidden;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .dashboard-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+    }
+    
+    .card-title {
+        font-size: 1.25rem;
+        padding: 16px 20px;
+        margin: 0;
+        border-bottom: 1px solid var(--border-color);
+        background-color: rgba(63, 81, 181, 0.05);
+    }
+    
+    .card-content {
+        padding: 20px;
+    }
+    
+    .table-responsive {
+        overflow-x: auto;
+        margin-bottom: 1rem;
+    }
+    
+    .performance-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+    }
+    
+    .performance-table th {
+        background-color: rgba(63, 81, 181, 0.1);
+        color: var(--primary-color);
+        font-weight: 500;
+        text-align: left;
+        padding: 12px 15px;
+        border-bottom: 2px solid var(--primary-color);
+    }
+    
+    .performance-table td {
+        padding: 10px 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .performance-table tr:hover {
+        background-color: rgba(63, 81, 181, 0.03);
+    }
+    
+    .metric-label {
+        font-weight: 500;
+    }
+    
+    .summary-row {
+        background-color: rgba(63, 81, 181, 0.05);
+        font-weight: 500;
+    }
+    
+    .summary-row td {
+        border-top: 2px solid var(--border-color);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 30px;
+        color: var(--text-light);
+        background-color: rgba(0,0,0,0.02);
+        border-radius: var(--border-radius);
+    }
+    
+    @media (max-width: 768px) {
+        .performance-table {
+            font-size: 0.85rem;
+        }
+        
+        .performance-table th,
+        .performance-table td {
+            padding: 8px 10px;
+        }
+    }
+</style>
+{% endblock %}
